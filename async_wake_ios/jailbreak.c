@@ -58,6 +58,9 @@ void jailbreak(char* path, mach_port_t tfp0, int phone_type)
     if (phone_type == 2)
         kernel_base = dump_kernel(tfp0, 0xFFFFFFF0076220A0);
         // 15B202: iPhone 7,2 reversed from QiLin
+    if (phone_type == 3)
+        kernel_base = dump_kernel(tfp0, 0xFFFFFFF0076560A0);
+    // 15B202: iPhone 9,3 reversed from QiLin
     uint64_t kaslr = kernel_base + 0xFF8FFC000; // offset of segment
     printf("[i]\tGot kaslr = 0x%llx\n", kaslr);
     printf("[+]\tAttempting to obtain root\n");

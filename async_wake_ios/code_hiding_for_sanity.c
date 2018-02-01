@@ -403,10 +403,10 @@ int patch_amfid(mach_port_t amfid_task_port){
 // discovered from: https://twitter.com/_argp/status/942429791520731136
 void xerub_remount_code(uint64_t kaslr, int phone_type)
 {
-    #define NUMBASES 3
+    #define NUMBASES 4
     // these 3 bases are for iPhones 81, 61, 72 reversed out of QiLin (see the jailbreak function for the
     //  corresponding addresses)
-    uint64_t bases[NUMBASES] = {0xfffffff00760a000, 0xFFFFFFF007612000, 0xFFFFFFF007622000};
+    uint64_t bases[NUMBASES] = {0xfffffff00760a000, 0xFFFFFFF007612000, 0xFFFFFFF007622000, 0xFFFFFFF007656000};
     printf("[i]\tAttempting to remount /...\n");
     //rootfs_vnode->vnode_val+0xd8->node_data->data+0x70->flags
     printf("[+]\tGot kaslr == 0x%llx\n", kaslr);

@@ -190,7 +190,7 @@ void offsets_init() {
   } else if (strstr(u.machine, "iPhone9,3")) {
     printf("this is iPhone 7, should work!\n");
     symbols = ksymbols_iphone_7_15B202;
-    have_syms = 1;
+    have_syms = 0; //TODO: this is a hotfix for incorrectly identified symbols (in jailbreak.c) for iPhone7
   } else if (strstr(u.machine, "iPhone8,1")) {
     printf("this is iPhone 6s, should work!\n");
     symbols = ksymbols_iphone_6s_15b202;

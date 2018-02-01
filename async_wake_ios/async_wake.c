@@ -707,6 +707,8 @@ void run_exploit_and_jailbreak(const char *path) {
           jailbreak((char *)path, tfp0, 1);
       if (strstr(iphone_version, "iPhone7,2"))
           jailbreak((char *)path, tfp0, 2);
+      if (strstr(iphone_version, "iPhone9,3"))
+          jailbreak((char *)path, tfp0, 3);
       printf("[+]\tDone!\n\n\n\n");
   }
     extern mach_port_t ws_tfp0;
