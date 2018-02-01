@@ -1,6 +1,8 @@
 # iOS 11 Jailbreak
 ## Target
 This jailbreak is for iOS 11.1.2 (15B202).  If you don't have this *exact* version it probably won't work for you
+## How to Install
+Load and run the XCode project or sideload the IPA using Cydia Impactor. For more complete / visual instructions see the iOS_jailbreak_writeup.pdf "How to jailbreak your phone" section.
 ## Version
 This is release 0.2a, there are updates planned for stability and expanding the device coverage
 ## Copyright
