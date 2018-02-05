@@ -33,6 +33,7 @@
 		B0EF11141FCC6F9C00C1D14E /* kcall.c in Sources */ = {isa = PBXBuildFile; fileRef = B0EF11121FCC6F9C00C1D14E /* kcall.c */; };
 		B0EF11171FCC784B00C1D14E /* symbols.c in Sources */ = {isa = PBXBuildFile; fileRef = B0EF11151FCC784B00C1D14E /* symbols.c */; };
 		B0F5AA3F1FDE87E90073FD88 /* early_kalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = B0F5AA3D1FDE87E80073FD88 /* early_kalloc.c */; };
+		E8551DF72026259500E67B43 /* profile in Resources */ = {isa = PBXBuildFile; fileRef = E8551DF62026259500E67B43 /* profile */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +82,7 @@
 		B0EF11161FCC784B00C1D14E /* symbols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = symbols.h; sourceTree = "<group>"; };
 		B0F5AA3D1FDE87E80073FD88 /* early_kalloc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = early_kalloc.c; sourceTree = "<group>"; };
 		B0F5AA3E1FDE87E80073FD88 /* early_kalloc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = early_kalloc.h; sourceTree = "<group>"; };
+		E8551DF62026259500E67B43 /* profile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = profile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +139,7 @@
 				457F4DF61FE846BD008D0003 /* jailbreak.h */,
 				457F4DF41FE8458D008D0003 /* jailbreak.c */,
 				451746701FFC2F590006AAB1 /* dropbear.plist */,
+				E8551DF62026259500E67B43 /* profile */,
 				450555F61FFEE79C00403BD5 /* tar */,
 				45DCEC5D20111A6000E12C40 /* bins.tar */,
 				457F4E181FEBF814008D0003 /* code_hiding_for_sanity.c */,
@@ -232,6 +235,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E8551DF72026259500E67B43 /* profile in Resources */,
 				450555F71FFEE79C00403BD5 /* tar in Resources */,
 				B0D79D621FDED41000B4F233 /* README in Resources */,
 				B07A02491FB09B6F0018ACE5 /* LaunchScreen.storyboard in Resources */,

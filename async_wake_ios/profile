@@ -1,0 +1,2 @@
+export PATH=$PATH:/jailbreak/usr/bin:/jailbreak/bin:/jailbreak/sbin:/jailbreak/usr/sbin:/jailbreak/usr/local/bin
+cd /jailbreak/

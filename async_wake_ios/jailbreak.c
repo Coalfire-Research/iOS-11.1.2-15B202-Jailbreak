@@ -184,6 +184,7 @@ void jailbreak(char* path, mach_port_t tfp0, int phone_type)
     exec_wrapper("/jailbreak/bin/launchctl", "print", "system", 0, 0, 0, tfp0);
     exec_wrapper("/jailbreak/bin/launchctl", "load", "/tmp/dropbear.plist", 0, 0, 0, tfp0);
     copyfile("/jailbreak/etc/motd", "/etc/motd", 0, 0xA);
+    copy_file_from_container(app_path, "profile", "/var/root/.profile");
     mkdir("/etc/dropbear", 0755);
     sleep(3);
     exec_wrapper("/jailbreak/usr/local/bin/dropbear", "-R", "--shell", "/jailbreak/bin/bash", 0, 0, tfp0);
