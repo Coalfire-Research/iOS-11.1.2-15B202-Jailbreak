@@ -22,6 +22,8 @@ Compile via
 jtool --sign --inplace --ent ../examples/ent.xml ws
 
 */
+extern mach_port_t tfp0;
+extern uint64_t rk64(uint64_t kaddr);
 
 int main(int argc, char** argv)
 {
@@ -31,9 +33,14 @@ int main(int argc, char** argv)
 		return -1;
 	}
     offsets_init();
-    uint64_t kernel_base = strtol(argv[1], NULL, 0x10);
+    uint64_t kernel_base = strtoull(argv[1], NULL, 0x10);
     task_t kernel_task;
-	host_get_special_port(mach_host_self(), HOST_LOCAL_NODE, 4, &kernel_task);
+    host_get_special_port(mach_host_self(), HOST_LOCAL_NODE, 4, &kernel_task);
+    kernel_task_port = kernel_task;
+    tfp0 = kernel_task;
+    printf("Using kernel base 0x%llx\n", kernel_base);
+    printf("Kernel base * == 0x%llx\n", rk64(kernel_base));
+    
     init_ws(kernel_task, kernel_base);
     wsmain(0);
 }
