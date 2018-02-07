@@ -1,4 +1,4 @@
-#How to compile code for arm64 & iOS 11
+# How to compile code for arm64 & iOS 11
 Every binary must be signed. The signature can be total crap & absolutely made up, but given the requirements for iOS 11 and AMFID and how this jailbreak bypasses that, after compilation of code you HAVE to sign the binary.
 
 Get jtool from here: http://www.newosxbook.com/tools/jtool.html
