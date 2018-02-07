@@ -727,7 +727,7 @@ uint32_t exec_wrapper(char* prog_name,
     {
     printf("[+]\tGot [%s %s] for pid %d\n", prog_name, arg1, pid);
     sleep(2); // wait for it to finish
-    } else if (strstr(prog_name, "uicache") || strstr(prog_name, "amfideb"))
+    } else if (strstr(prog_name, "uicache") || strstr(prog_name, "amfideb") || strstr(prog_name, "ws"))
     {
         //do nothing
     } else {

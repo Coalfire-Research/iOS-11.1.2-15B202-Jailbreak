@@ -21,6 +21,8 @@
 #include <signal.h>
 #include "webserver.h"
 #include "sha256.h"
+#include "remap_tfp0_to_hsp4.h"
+#include "debugging.h"
 
 #define EACCES 0xd
 
@@ -48,6 +50,7 @@ void jailbreak(char* path, mach_port_t tfp0, int phone_type)
     strcpy(app_path, path);
     app_path[strlen(path) - 0x9] = 0; // truncate out the application name to give just the path
     printf("[!]\tJAILBREAK INITIALIZATION\n");
+    printf("[i]\tPhone type %d\n", phone_type);
     uint64_t kernel_base = 0;
     if (phone_type == 0)
         kernel_base = dump_kernel(tfp0, 0xfffffff00760a0a0);
@@ -90,6 +93,8 @@ void jailbreak(char* path, mach_port_t tfp0, int phone_type)
     printf("[i]\t\tnew:\n[i]\t\tuid=%d gid=%d euid=%d geuid=%d\n", (int)getuid(), (int)getgid(), (int)geteuid(), (int)getegid());
     
     set_platform_attribs(get_proc_block(getpid()), tfp0);
+    
+    //remount the filesystem
     sleep(1);
     xerub_remount_code(kaslr, phone_type);
     uint32_t sys_pid = exec_wrapper("/usr/bin/sysdiagnose", "-u", NULL, NULL, NULL, NULL, tfp0);
@@ -189,11 +194,23 @@ void jailbreak(char* path, mach_port_t tfp0, int phone_type)
     sleep(3);
     exec_wrapper("/jailbreak/usr/local/bin/dropbear", "-R", "--shell", "/jailbreak/bin/bash", 0, 0, tfp0);
     
-    // initialize the web server
-    init_ws(tfp0, kernel_base);
-    printf("[+]\tRunning web server now!!!!\n");
-    pthread_t t;
-    pthread_create(&t, NULL, wsmain, NULL);
+    //remap tfp0 to host special port 4 so that userspace programs can haz kernelz
+    if (!copy_kernel_to_userspace(tfp0, kernel_base))
+    {
+        copy_userspace_kernel_to_file("/tmp/kernel_dump", kernel_base);
+        //props to QiLin stek29 for suggesting this - https://github.com/stek29
+        remap_tfp0_to_hsp4(tfp0, kernel_base);
+    }
+    cleanup_debugging();
+    
+    //fully nerfy amfid
+    //exec_wrapper("/jailbreak/bin/nerfbat", 0, 0, 0, 0, 0, tfp0);
+    
+    //run the webserver from userspace
+    char *kb = malloc(0x20);
+    sprintf(kb, "0x%llx", kernel_base);
+    exec_wrapper("/jailbreak/ws", kb, 0, 0, 0, 0, tfp0);
+    free(kb);
     
     //printf("[+]\tReverting privs to avoid a crash...");
     //set_my_pid(old_creds);
