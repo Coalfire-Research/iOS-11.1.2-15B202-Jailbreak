@@ -20,20 +20,15 @@
 #include "async_wake.h"
 #include "cdhash.h"
 #include "code_hiding_for_sanity.h"
-
-
 #include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 #include <sys/uio.h>
-#include <unistd.h>
 #include <mach-o/loader.h>
 #include <mach/machine.h>
 #include <stdint.h>
 #include <string.h>
 #include "sha256.h"
+#include "kutils.h"
+#include "find_port.h"
 
 extern mach_port_t kernel_task_port;
 extern uint64_t last_proc_impersonated;
