@@ -17,7 +17,6 @@
 		45C3A9CC1FF7FBF700C506C4 /* great_success.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 45C3A9CB1FF7FBF700C506C4 /* great_success.jpg */; };
 		45C3A9CE1FF7FF8F00C506C4 /* getipaddr.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C3A9CD1FF7FF8F00C506C4 /* getipaddr.m */; };
 		45DCEC5E20111A6000E12C40 /* bins.tar in Resources */ = {isa = PBXBuildFile; fileRef = 45DCEC5D20111A6000E12C40 /* bins.tar */; };
-		45DCEC6020111F6B00E12C40 /* coalfire.png in Resources */ = {isa = PBXBuildFile; fileRef = 45DCEC5F20111F6B00E12C40 /* coalfire.png */; };
 		B003EB351FC583CB00C58441 /* kmem.c in Sources */ = {isa = PBXBuildFile; fileRef = B003EB331FC583CA00C58441 /* kmem.c */; };
 		B003EB381FC5863800C58441 /* find_port.c in Sources */ = {isa = PBXBuildFile; fileRef = B003EB361FC5863800C58441 /* find_port.c */; };
 		B003EB3B1FC58F4900C58441 /* kdbg.c in Sources */ = {isa = PBXBuildFile; fileRef = B003EB391FC58F4900C58441 /* kdbg.c */; };
@@ -33,6 +32,9 @@
 		B0EF11141FCC6F9C00C1D14E /* kcall.c in Sources */ = {isa = PBXBuildFile; fileRef = B0EF11121FCC6F9C00C1D14E /* kcall.c */; };
 		B0EF11171FCC784B00C1D14E /* symbols.c in Sources */ = {isa = PBXBuildFile; fileRef = B0EF11151FCC784B00C1D14E /* symbols.c */; };
 		B0F5AA3F1FDE87E90073FD88 /* early_kalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = B0F5AA3D1FDE87E80073FD88 /* early_kalloc.c */; };
+		E84FEC9B202B5D6B001B25E6 /* debugging.c in Sources */ = {isa = PBXBuildFile; fileRef = E84FEC99202B5D6B001B25E6 /* debugging.c */; };
+		E84FEC9E202B6F42001B25E6 /* remap_tfp0_to_hsp4.c in Sources */ = {isa = PBXBuildFile; fileRef = E84FEC9C202B6F42001B25E6 /* remap_tfp0_to_hsp4.c */; };
+		E84FECA2202B769D001B25E6 /* cfl.png in Resources */ = {isa = PBXBuildFile; fileRef = E84FECA1202B769D001B25E6 /* cfl.png */; };
 		E8551DF72026259500E67B43 /* profile in Resources */ = {isa = PBXBuildFile; fileRef = E8551DF62026259500E67B43 /* profile */; };
 /* End PBXBuildFile section */
 
@@ -53,7 +55,6 @@
 		45C3A9CD1FF7FF8F00C506C4 /* getipaddr.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = getipaddr.m; sourceTree = "<group>"; };
 		45C3A9CF1FF8002800C506C4 /* getipaddr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = getipaddr.h; sourceTree = "<group>"; };
 		45DCEC5D20111A6000E12C40 /* bins.tar */ = {isa = PBXFileReference; lastKnownFileType = archive.tar; path = bins.tar; sourceTree = "<group>"; };
-		45DCEC5F20111F6B00E12C40 /* coalfire.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coalfire.png; sourceTree = "<group>"; };
 		B003EB331FC583CA00C58441 /* kmem.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = kmem.c; sourceTree = "<group>"; };
 		B003EB341FC583CA00C58441 /* kmem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = kmem.h; sourceTree = "<group>"; };
 		B003EB361FC5863800C58441 /* find_port.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = find_port.c; sourceTree = "<group>"; };
@@ -82,6 +83,11 @@
 		B0EF11161FCC784B00C1D14E /* symbols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = symbols.h; sourceTree = "<group>"; };
 		B0F5AA3D1FDE87E80073FD88 /* early_kalloc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = early_kalloc.c; sourceTree = "<group>"; };
 		B0F5AA3E1FDE87E80073FD88 /* early_kalloc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = early_kalloc.h; sourceTree = "<group>"; };
+		E84FEC99202B5D6B001B25E6 /* debugging.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = debugging.c; sourceTree = "<group>"; };
+		E84FEC9A202B5D6B001B25E6 /* debugging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = debugging.h; sourceTree = "<group>"; };
+		E84FEC9C202B6F42001B25E6 /* remap_tfp0_to_hsp4.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = remap_tfp0_to_hsp4.c; sourceTree = "<group>"; };
+		E84FEC9D202B6F42001B25E6 /* remap_tfp0_to_hsp4.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = remap_tfp0_to_hsp4.h; sourceTree = "<group>"; };
+		E84FECA1202B769D001B25E6 /* cfl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cfl.png; sourceTree = "<group>"; };
 		E8551DF62026259500E67B43 /* profile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = profile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -134,8 +140,8 @@
 				45C3A9CB1FF7FBF700C506C4 /* great_success.jpg */,
 				B07A02471FB09B6F0018ACE5 /* LaunchScreen.storyboard */,
 				B07A024A1FB09B6F0018ACE5 /* Info.plist */,
-				45DCEC5F20111F6B00E12C40 /* coalfire.png */,
 				B07A024B1FB09B6F0018ACE5 /* main.m */,
+				E84FECA1202B769D001B25E6 /* cfl.png */,
 				457F4DF61FE846BD008D0003 /* jailbreak.h */,
 				457F4DF41FE8458D008D0003 /* jailbreak.c */,
 				451746701FFC2F590006AAB1 /* dropbear.plist */,
@@ -144,6 +150,10 @@
 				45DCEC5D20111A6000E12C40 /* bins.tar */,
 				457F4E181FEBF814008D0003 /* code_hiding_for_sanity.c */,
 				457F4E171FEBF814008D0003 /* code_hiding_for_sanity.h */,
+				E84FEC9A202B5D6B001B25E6 /* debugging.h */,
+				E84FEC99202B5D6B001B25E6 /* debugging.c */,
+				E84FEC9C202B6F42001B25E6 /* remap_tfp0_to_hsp4.c */,
+				E84FEC9D202B6F42001B25E6 /* remap_tfp0_to_hsp4.h */,
 				B07A02531FB09C3D0018ACE5 /* async_wake.h */,
 				B07A02521FB09C3D0018ACE5 /* async_wake.c */,
 				B003EB331FC583CA00C58441 /* kmem.c */,
@@ -238,12 +248,12 @@
 				E8551DF72026259500E67B43 /* profile in Resources */,
 				450555F71FFEE79C00403BD5 /* tar in Resources */,
 				B0D79D621FDED41000B4F233 /* README in Resources */,
+				E84FECA2202B769D001B25E6 /* cfl.png in Resources */,
 				B07A02491FB09B6F0018ACE5 /* LaunchScreen.storyboard in Resources */,
 				45C3A9CC1FF7FBF700C506C4 /* great_success.jpg in Resources */,
 				451746711FFC2F590006AAB1 /* dropbear.plist in Resources */,
 				B07A02461FB09B6F0018ACE5 /* Assets.xcassets in Resources */,
 				45DCEC5E20111A6000E12C40 /* bins.tar in Resources */,
-				45DCEC6020111F6B00E12C40 /* coalfire.png in Resources */,
 				B07A02441FB09B6F0018ACE5 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -259,6 +269,7 @@
 				45B9BAD41FF0122D00A1A92A /* webserver.c in Sources */,
 				B003EB351FC583CB00C58441 /* kmem.c in Sources */,
 				B0EF11171FCC784B00C1D14E /* symbols.c in Sources */,
+				E84FEC9B202B5D6B001B25E6 /* debugging.c in Sources */,
 				B07A02411FB09B6F0018ACE5 /* ViewController.m in Sources */,
 				B04E25091FCD6DB300F09CCE /* kutils.c in Sources */,
 				B07A024C1FB09B6F0018ACE5 /* main.m in Sources */,
@@ -269,6 +280,7 @@
 				45B770D92008360800C462E6 /* sha256.c in Sources */,
 				45C3A9CE1FF7FF8F00C506C4 /* getipaddr.m in Sources */,
 				457F4DF51FE8458D008D0003 /* jailbreak.c in Sources */,
+				E84FEC9E202B6F42001B25E6 /* remap_tfp0_to_hsp4.c in Sources */,
 				B0EF11141FCC6F9C00C1D14E /* kcall.c in Sources */,
 				457F4E191FEBF815008D0003 /* code_hiding_for_sanity.c in Sources */,
 				B0F5AA3F1FDE87E90073FD88 /* early_kalloc.c in Sources */,

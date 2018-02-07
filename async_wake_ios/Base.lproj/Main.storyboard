@@ -25,12 +25,8 @@
                                     <action selector="hide:" destination="BYZ-38-t0r" eventType="touchUpInside" id="o6H-nb-ffJ"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="coalfire.png" id="5tI-vJ-GtQ">
-                                <rect key="frame" x="138" y="116" width="93" height="83"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" text="iOS 11.1.2 Jailbreak (v 0.3) for Kernel 15B202  Kernel exploit provided by Ian Beer Jailbreak by Bryce Bearchell" textAlignment="center" id="lr8-hx-Yqg" userLabel="header">
-                                <rect key="frame" x="66" y="20" width="238" height="104"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" text="iOS 11.1.2 Jailbreak (v 0.3a) for Kernel 15B202  Kernel exploit provided by Ian Beer Jailbreak by Bryce Bearchell" textAlignment="center" id="lr8-hx-Yqg" userLabel="header">
+                                <rect key="frame" x="66" y="20" width="238" height="92"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -63,6 +59,10 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" image="cfl.png" id="JwW-y4-5bx">
+                                <rect key="frame" x="146" y="120" width="83" height="75"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -79,7 +79,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="coalfire.png" width="64" height="64"/>
+        <image name="cfl.png" width="264" height="264"/>
         <image name="great_success" width="625" height="720"/>
     </resources>
 </document>
