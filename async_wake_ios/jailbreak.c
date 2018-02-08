@@ -41,10 +41,20 @@ extern uint64_t kernel_leak;
 void jailbreak(char* path, mach_port_t tfp0, int phone_type)
 {
     char *app_path = malloc(strlen(path) + 1);
-    char * new_entitlements = "\tplatform-application\n"
-                              "\ttask_for_pid-allow\n\t\n"
-                              "\tcom.apple.system-task-ports\n\t\n"
-                              "\tcom.apple.private.xpc.service-configure\n\t";
+    char * new_entitlements = "\t<key>com.apple.private.kernel.system-override</key><true/>\n"
+                            "\t<key>platform-application</key><true/>\n"
+                            "\t<key>task_for_pid-allow</key><true/>\n"
+                            "\t<key>com.apple.system-task-ports</key><true/>\n"
+                            "\t<key>com.apple.private.xpc.service-configure</key><true/>\n"
+                            "\t<key>com.apple.backboardd.debugapplications</key><true/>\n"
+                            "\t<key>com.apple.backboardd.launchapplications</key><true/>\n"
+                            "\t<key>com.apple.diagnosticd.diagnostic</key><true/>\n"
+                            "\t<key>com.apple.frontboard.debugapplications</key><true/>\n"
+                            "\t<key>com.apple.frontboard.launchapplications</key><true/>\n"
+                            "\t<key>com.apple.security.network.client</key><true/>\n"
+                            "\t<key>com.apple.security.network.server</key><true/>\n"
+                            "\t<key>com.apple.springboard.debugapplications</key><true/>\n"
+                            "\t<key>run-unsigned-code</key><true/>\n";
     kern_return_t kr;
     uint64_t old_creds = 0;
     strcpy(app_path, path);

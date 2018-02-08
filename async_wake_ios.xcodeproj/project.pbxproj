@@ -36,6 +36,11 @@
 		E84FEC9E202B6F42001B25E6 /* remap_tfp0_to_hsp4.c in Sources */ = {isa = PBXBuildFile; fileRef = E84FEC9C202B6F42001B25E6 /* remap_tfp0_to_hsp4.c */; };
 		E84FECA2202B769D001B25E6 /* cfl.png in Resources */ = {isa = PBXBuildFile; fileRef = E84FECA1202B769D001B25E6 /* cfl.png */; };
 		E8551DF72026259500E67B43 /* profile in Resources */ = {isa = PBXBuildFile; fileRef = E8551DF62026259500E67B43 /* profile */; };
+		E85E5091202CBA6700FC8799 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E85E5090202CBA6700FC8799 /* ExternalAccessory.framework */; };
+		E85E5094202CBA6900FC8799 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E85E5093202CBA6900FC8799 /* HealthKit.framework */; };
+		E85E5096202CBA6A00FC8799 /* HomeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E85E5095202CBA6A00FC8799 /* HomeKit.framework */; };
+		E85E5098202CBA7100FC8799 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E85E5097202CBA7100FC8799 /* AudioToolbox.framework */; };
+		E85E509E202CBA7900FC8799 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E85E509D202CBA7900FC8799 /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -89,6 +94,12 @@
 		E84FEC9D202B6F42001B25E6 /* remap_tfp0_to_hsp4.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = remap_tfp0_to_hsp4.h; sourceTree = "<group>"; };
 		E84FECA1202B769D001B25E6 /* cfl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cfl.png; sourceTree = "<group>"; };
 		E8551DF62026259500E67B43 /* profile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = profile; sourceTree = "<group>"; };
+		E85E5090202CBA6700FC8799 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
+		E85E5092202CBA6700FC8799 /* Jailbreak.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Jailbreak.entitlements; sourceTree = "<group>"; };
+		E85E5093202CBA6900FC8799 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		E85E5095202CBA6A00FC8799 /* HomeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HomeKit.framework; path = System/Library/Frameworks/HomeKit.framework; sourceTree = SDKROOT; };
+		E85E5097202CBA7100FC8799 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		E85E509D202CBA7900FC8799 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +107,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E85E5096202CBA6A00FC8799 /* HomeKit.framework in Frameworks */,
+				E85E509E202CBA7900FC8799 /* StoreKit.framework in Frameworks */,
+				E85E5091202CBA6700FC8799 /* ExternalAccessory.framework in Frameworks */,
+				E85E5094202CBA6900FC8799 /* HealthKit.framework in Frameworks */,
+				E85E5098202CBA7100FC8799 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,6 +121,11 @@
 		45A6936F1FFC1F8D0068BB8F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E85E509D202CBA7900FC8799 /* StoreKit.framework */,
+				E85E5097202CBA7100FC8799 /* AudioToolbox.framework */,
+				E85E5095202CBA6A00FC8799 /* HomeKit.framework */,
+				E85E5093202CBA6900FC8799 /* HealthKit.framework */,
+				E85E5090202CBA6700FC8799 /* ExternalAccessory.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -129,6 +150,7 @@
 		B07A023B1FB09B6F0018ACE5 /* async_wake_ios */ = {
 			isa = PBXGroup;
 			children = (
+				E85E5092202CBA6700FC8799 /* Jailbreak.entitlements */,
 				45C3A9CF1FF8002800C506C4 /* getipaddr.h */,
 				B07A023C1FB09B6F0018ACE5 /* AppDelegate.h */,
 				B07A023D1FB09B6F0018ACE5 /* AppDelegate.m */,
@@ -219,6 +241,71 @@
 					B07A02381FB09B6F0018ACE5 = {
 						CreatedOnToolsVersion = 9.1;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplePay = {
+								enabled = 0;
+							};
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 0;
+							};
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+							com.apple.DataProtection = {
+								enabled = 1;
+							};
+							com.apple.GameCenter = {
+								enabled = 0;
+							};
+							com.apple.HealthKit = {
+								enabled = 1;
+							};
+							com.apple.HomeKit = {
+								enabled = 1;
+							};
+							com.apple.HotspotConfiguration = {
+								enabled = 0;
+							};
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+							com.apple.InterAppAudio = {
+								enabled = 1;
+							};
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+							com.apple.Multipath = {
+								enabled = 1;
+							};
+							com.apple.NearFieldCommunicationTagReading = {
+								enabled = 1;
+							};
+							com.apple.NetworkExtensions.iOS = {
+								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 0;
+							};
+							com.apple.SafariKeychain = {
+								enabled = 0;
+							};
+							com.apple.Siri = {
+								enabled = 1;
+							};
+							com.apple.VPNLite = {
+								enabled = 1;
+							};
+							com.apple.WAC = {
+								enabled = 1;
+							};
+							com.apple.Wallet = {
+								enabled = 0;
+							};
+							com.apple.iCloud = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -417,6 +504,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = async_wake_ios/Jailbreak.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BBBRKTL9QV;
 				ENABLE_BITCODE = NO;
@@ -427,7 +515,7 @@
 					"-framework",
 					IOKit,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.async-wake-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jb03a.async-wake-ios";
 				PRODUCT_NAME = Jailbreak;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -437,6 +525,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = async_wake_ios/Jailbreak.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BBBRKTL9QV;
 				ENABLE_BITCODE = NO;
@@ -447,7 +536,7 @@
 					"-framework",
 					IOKit,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.async-wake-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jb03a.async-wake-ios";
 				PRODUCT_NAME = Jailbreak;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
