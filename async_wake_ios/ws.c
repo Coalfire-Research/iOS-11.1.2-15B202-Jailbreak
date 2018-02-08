@@ -14,6 +14,8 @@ uint64_t amfid_base;
 mach_port_t amfid_exception_port = MACH_PORT_NULL;
 mach_port_t kernel_task_port = MACH_PORT_NULL;
 
+extern mach_port_t tfp0;
+extern uint64_t rk64(uint64_t kaddr);
 
 /*
 
@@ -32,10 +34,10 @@ int main(int argc, char** argv)
 		printf("Usage\n\t%s kernel_base\n", argv[0]);
 		return -1;
 	}
-    offsets_init();
     uint64_t kernel_base = strtoull(argv[1], NULL, 0x10);
 
     // THIS IS BOILERPLATE TO PROPERLY GAIN TFP0 AND INITIALIZE INTERNALS
+    offsets_init();
     task_t kernel_task;
     host_get_special_port(mach_host_self(), HOST_LOCAL_NODE, 4, &kernel_task);
     task_self_addr();
