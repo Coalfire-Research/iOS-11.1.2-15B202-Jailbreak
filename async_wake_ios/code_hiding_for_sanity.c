@@ -649,32 +649,6 @@ void set_platform_attribs(uint64_t proc, mach_port_t tfp0)
     wk32(platform_addr, platform | 0x400);
     //set platform flags
     wk32(proc+0x279+0x2f, 0x24004001);
-    //locate code signing block
-    uint64_t vnode_info = rk64(0x248);
-    printf("[i]\tvnode_info = 0x%llx\n", vnode_info);
-    uint64_t ubc_block = rk64(vnode_info);
-    printf("[i]\tubc_block = 0x%llx\n", ubc_block);
-    uint64_t ubc_info = rk64(ubc_block+0x78);
-    printf("[i]\tubc_info = 0x%llx\n", ubc_info);
-    uint64_t blob = rk64(ubc_info+0x50);
-    printf("[i]\tblob = 0x%llx\n", blob);
-    mach_msg_type_number_t sz = 0;
-    vm_offset_t* data;
-    kern_return_t kr;
-    kr = mach_vm_read(tfp0, (mach_vm_address_t)blob, (mach_vm_size_t)0xa8, (vm_offset_t *)&data, &sz);
-    if (kr != KERN_SUCCESS)
-    {
-        //printf("[-]\tWe couldn't read the pcb block\n");
-        return;
-    }
-    *(uint8_t *)(data + 0xA4) = (*(uint8_t *)(data + 0xA4) & 0xFE) | 1;
-    *(uint32_t *)(data + 0xC) = *(uint32_t *)(data + 0xC) | OSSwapInt32(0x24004001);
-    kr = mach_vm_write(tfp0, (mach_vm_address_t)blob, (vm_offset_t)data, (mach_msg_type_number_t)0xa8);
-    if (kr != KERN_SUCCESS)
-    {
-        printf("[-]\tWe couldn't write back the pcb block\n");
-        return;
-    }
     printf("[d]\tPlatform attributes are correctly set for process 0x%llx\n", proc);
 }
 
