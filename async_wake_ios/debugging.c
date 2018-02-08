@@ -2,8 +2,11 @@
 //  Created by Bryce Bearchell on 2/7/18.
 
 #include "debugging.h"
+#include "code_hiding_for_sanity.h"
+
 void* kernel_global;
 uint64_t kernel_size_global;
+extern uint64_t cached_task_self_addr;
 
 void cleanup_debugging()
 {
@@ -47,12 +50,35 @@ void copy_userspace_kernel_to_file(char *fname, uint64_t kernel_base)
     bytes_written = write(fd, kernel_global, kernel_size_global);
     close(fd);
     printf("[kernel]\tCopyied %zd bytes to [%s]\n", bytes_written, fname);
+    
     char *base = malloc(strlen(fname) + 6);
     strcpy(base, fname);
     strcat(base, ".base");
     fd = open(base, O_WRONLY | O_CREAT);
     char *base_s = malloc(0x20);
     sprintf(base_s, "0x%llx", kernel_base);
+    write(fd, base_s, strlen(base_s));
+    close(fd);
+    free(base_s);
+    free(base);
+    
+    base = malloc(strlen(fname) + 0x17);
+    base_s = malloc(0x20);
+    strcpy(base, fname);
+    strcat(base, ".cached_kernel_task");
+    sprintf(base_s, "0x%llx", get_proc_block(0));
+    fd = open(base, O_WRONLY | O_CREAT);
+    write(fd, base_s, strlen(base_s));
+    close(fd);
+    free(base_s);
+    free(base);
+    
+    base = malloc(strlen(fname) + 0x17);
+    base_s = malloc(0x20);
+    strcpy(base, fname);
+    strcat(base, ".cached_task_self_addr");
+    sprintf(base_s, "0x%llx", cached_task_self_addr);
+    fd = open(base, O_WRONLY | O_CREAT);
     write(fd, base_s, strlen(base_s));
     close(fd);
     free(base_s);
