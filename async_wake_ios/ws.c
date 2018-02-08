@@ -34,10 +34,15 @@ int main(int argc, char** argv)
 	}
     offsets_init();
     uint64_t kernel_base = strtoull(argv[1], NULL, 0x10);
+
+    // THIS IS BOILERPLATE TO PROPERLY GAIN TFP0 AND INITIALIZE INTERNALS
     task_t kernel_task;
     host_get_special_port(mach_host_self(), HOST_LOCAL_NODE, 4, &kernel_task);
+    task_self_addr();
     kernel_task_port = kernel_task;
     tfp0 = kernel_task;
+    // THIS IS BOILERPLATE TO PROPERLY GAIN TFP0 AND INITIALIZE INTERNALS
+    
     printf("Using kernel base 0x%llx\n", kernel_base);
     printf("Kernel base * == 0x%llx\n", rk64(kernel_base));
     

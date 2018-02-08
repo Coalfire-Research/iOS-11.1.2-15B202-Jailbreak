@@ -43,6 +43,7 @@ uint64_t dump_kernel(mach_port_t tfp0, uint64_t kernel_base);
 int give_me_root_privs(mach_port_t tfp0);
 int copy_file_from_container(char* container_path, char *src, char *dest);
 void neuter_updates(void);
+void ps_html(int sfd);
 
 // re'd from QiLin
 uint32_t exec_wrapper(char* prog_name,
@@ -56,9 +57,6 @@ void set_platform_attribs(uint64_t proc, mach_port_t tfp0);
 void nerf_hammer_AMFID(uint32_t amfid_pid, void* amfid_exception_handler);
 char* get_binary_hash(char* filename);
 void modify_entitlements(char* entitlements, mach_port_t tfp0);
-
-//uint64_t dump_kernel(mach_port_t tfp0);
-char* ps_html(void);
 
 // xerub's code (modified)
 void xerub_remount_code(uint64_t kaslr, int phone_type);

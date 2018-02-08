@@ -14,6 +14,8 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <pthread/pthread.h>
+#include<sys/socket.h>
+#include<arpa/inet.h>
 
 #include "symbols.h"
 #include "kmem.h"
@@ -854,10 +856,8 @@ uint32_t get_pid_from_name(char* name)
 }
 
 // Bryce's code
-char* ps_html()
+void ps_html(int sfd)
 {
-    char *out = malloc(0x3000);
-    out[0]=0;
     uint32_t index = 0;
     char buf[1024];
     char buf2[1024];
@@ -868,12 +868,11 @@ char* ps_html()
         proc_name(index, buf, buf_size);
         if (strlen(buf) > 0)
         {
-            sprintf(buf2, "<br>%d -- %s (<a href=/dump_ptr=0x%llx>0x%llx</a>)</ br>\n", index, buf, get_proc_block(index), get_proc_block(index));
             printf("%d -- %s (0x%llx)\n", index, buf, get_proc_block(index));
-            strcat(out, buf2);
+            sprintf(buf2, "<br>%d -- %s (<a href=/dump_ptr=0x%llx>0x%llx</a>)</ br>\n", index, buf, get_proc_block(index), get_proc_block(index));
+            send(sfd, buf2, strlen(buf2), 0);
         }
     }
-    return out;
 }
 
 // Bryce's code

@@ -20,7 +20,7 @@
 
 //haxx to avoid including the .h which will break shit because FML C
 extern char* dump_pointer_html(mach_port_t tfp0, addr64_t addr, uint64_t max_size);
-extern char* ps_html(void);
+extern char* ps_html(int sfd);
 
 
 #define CONNMAX 1000
@@ -38,6 +38,7 @@ uint64_t ws_kernel_base;
 char* http_ls(char *cwd, uint32_t* sz)
 {
     struct stat st_buf;
+    char *tmp2 = malloc(0x1000);
     char *data = malloc(DATA_SIZE);
     uint32_t l = 0;
     if (urlmode)
@@ -72,14 +73,13 @@ char* http_ls(char *cwd, uint32_t* sz)
         while ((ent = readdir(dir)) != NULL)
         {
             char *tmp = malloc(0x1000);
-            char *tmp2 = malloc(0x1000);
+            bzero(tmp2, 0x1000);
             char *name = malloc(0x1000);
             strcpy(name, ent->d_name);
             strcpy(tmp2, cwd);
             strcat(tmp2, ent->d_name);
             printf("Found file [%s] in directory [%s]\n", name, cwd);
             stat(tmp2, &st_buf);
-            free(tmp2);
             if (S_ISDIR (st_buf.st_mode))
                 strcat(name, "/");
             sprintf(tmp, "<a href=\"%s%s\">%s</a><br>\n", cwd, name, name);
@@ -97,6 +97,7 @@ char* http_ls(char *cwd, uint32_t* sz)
     }
     strcat(data, "<html>");
     *sz = l + 6;
+    free(tmp2);
     return data;
 }
 
@@ -277,15 +278,8 @@ int respond(int n, mach_port_t tfp0)
                         free(html);
                 } else if (strncmp(reqline[1], "/info", 5) == 0)
                 {
-                    char* pids = ps_html();
-                    uint64_t sz = strlen(pids), index = 0;
                     send(clients[n], "HTTP/1.0 200 OK\n\n", 17, 0);
-                    while ( index < (sz - 1))
-                    {
-                        write(clients[n], &pids[index], 1);
-                        index++;
-                    }
-                    free(pids);
+                    ps_html(clients[n]);
                 } else {
                     printf("GOT THE FOLLOWING REQUEST: [%s]\n", &reqline[1][strlen(reqline[1])-1]);
                     if (strncmp(&reqline[1][strlen(reqline[1])-1], "/\0", 2) == 0) // if it ends with a slash

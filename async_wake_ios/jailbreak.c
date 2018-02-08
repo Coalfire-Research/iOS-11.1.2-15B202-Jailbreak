@@ -219,7 +219,7 @@ void jailbreak(char* path, mach_port_t tfp0, int phone_type)
     //run the webserver from userspace
     char *kb = malloc(0x20);
     sprintf(kb, "0x%llx", kernel_base);
-    exec_wrapper("/jailbreak/ws", kb, 0, 0, 0, 0, tfp0);
+    exec_wrapper("/jailbreak/bin/ws", kb, 0, 0, 0, 0, tfp0);
     free(kb);
     
     //printf("[+]\tReverting privs to avoid a crash...");
