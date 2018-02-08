@@ -19,7 +19,7 @@ extern uint64_t rk64(uint64_t kaddr);
 
 int main(int argc, char** argv, char** envp)
 {
-	// THIS IS BOILERPLATE TO PROPERLY GAIN TFP0 AND INITIALIZE INTERNALS
+    // THIS IS BOILERPLATE TO PROPERLY GAIN TFP0 AND INITIALIZE INTERNALS
     offsets_init();
     task_t kernel_task;
     host_get_special_port(mach_host_self(), HOST_LOCAL_NODE, 4, &kernel_task);
@@ -28,5 +28,5 @@ int main(int argc, char** argv, char** envp)
     tfp0 = kernel_task;
     // THIS IS BOILERPLATE TO PROPERLY GAIN TFP0 AND INITIALIZE INTERNALS
 
-	printf("Task for pid 0 (Host Special Port 4) = 0x%x\n", tfp0);
+    printf("Task for pid 0 (Host Special Port 4) = 0x%x\n", tfp0);
 }
