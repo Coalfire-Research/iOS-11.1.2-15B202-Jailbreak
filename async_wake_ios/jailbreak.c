@@ -60,6 +60,7 @@ void jailbreak(char* path, mach_port_t tfp0, int phone_type)
                             "\t<key>run-unsigned-code</key><true/>\n";
     kern_return_t kr;
     uint64_t old_creds = 0;
+    int fd =0;
     strcpy(app_path, path);
     app_path[strlen(path) - 0x9] = 0; // truncate out the application name to give just the path
     printf("[!]\tJAILBREAK INITIALIZATION\n");
@@ -167,20 +168,31 @@ void jailbreak(char* path, mach_port_t tfp0, int phone_type)
     }
     chdir("/jailbreak");
     
+    
+    char* old_jump_table = malloc(0x20);
+    char* old_jump_table_entry = malloc(0x20);
+    strcpy(old_jump_table, "/tmp/amfid.MISVSACI");
+    sprintf(old_jump_table_entry, "0x%llx", old_amfid_MISVSACI);
+    fd = open(old_jump_table, O_WRONLY | O_CREAT);
+    write(fd, old_jump_table_entry, 0x20);
+    close(fd);
+    free(old_jump_table_entry);
+    free(old_jump_table);
+    
     // drop files into /jailbreak and /tmp
     copy_file_from_container(app_path, "bins.tar", "/tmp/bins.tar"); //TODO build your own binaries
     copy_file_from_container(app_path, "tar", "/jailbreak/tar");
     
     // this is me not wanting to deal with xcode signature failures from signed code
     // that isn't mine, tar was retrieved from http://newosxbook.com/tools/iOSBinaries.html
-    int fd = open("/jailbreak/tar", O_RDWR);
+    fd = open("/jailbreak/tar", O_RDWR);
     write(fd, "\xcf\xfa\xed\xfe", 4);
     close(fd);
     chmod("/jailbreak/tar", 0755);
     
     // unpack the binaries
     sleep(1);
-    exec_wrapper("/jailbreak/tar", "-xvf", "/tmp/bins.tar", 0, 0, 0, tfp0); //--keep-newer-files
+    exec_wrapper("/jailbreak/tar", "--keep-newer-files", "-xvf", "/tmp/bins.tar", 0, 0, tfp0); //--keep-newer-files
     sleep(5); // exec returns instantly, but actual file operations take some time so
               // sleep to make sure tar actually finishes
     exec_wrapper("/jailbreak/usr/bin/uname", "-a", 0, 0, 0, 0, tfp0);
@@ -204,8 +216,7 @@ void jailbreak(char* path, mach_port_t tfp0, int phone_type)
     copyfile("/jailbreak/etc/motd", "/etc/motd", 0, 0xA);
     copy_file_from_container(app_path, "profile", "/var/root/.profile");
     mkdir("/etc/dropbear", 0755);
-    sleep(3);
-    exec_wrapper("/jailbreak/usr/local/bin/dropbear", "-R", "--shell", "/jailbreak/bin/bash", 0, 0, tfp0);
+
     
     //remap tfp0 to host special port 4 so that userspace programs can haz kernelz
     if (!copy_kernel_to_userspace(tfp0, kernel_base))
@@ -228,26 +239,32 @@ void jailbreak(char* path, mach_port_t tfp0, int phone_type)
     chown("/tmp/ws.plist", 0, 0);
     exec_wrapper("/jailbreak/bin/launchctl", "print", "system", 0, 0, 0, tfp0);
     exec_wrapper("/jailbreak/bin/launchctl", "load", "/tmp/ws.plist", 0, 0, 0, tfp0);
-    exec_wrapper("/jailbreak/bin/ws", kb, 0, 0, 0, 0, tfp0);
-    free(kb);
+    
 
     
-    // run nerfbat so the hash is stuffed into the trust cache
-    sleep(2);
+    // run nerfbat
     copy_file_from_container(app_path, "nerfbat.plist", "/tmp/nerfbat.plist");
     chmod("/jailbreak/bin/launchctl", 0777);
     chmod("/tmp/nerfbat.plist", 0400);
     chown("/tmp/nerfbat.plist", 0, 0);
     exec_wrapper("/jailbreak/bin/launchctl", "print", "system", 0, 0, 0, tfp0);
     exec_wrapper("/jailbreak/bin/launchctl", "load", "/tmp/nerfbat.plist", 0, 0, 0, tfp0);
-    exec_wrapper("/jailbreak/bin/nerfbat", 0, 0, 0, 0, 0, tfp0);
-    sleep(2);
-    kill_thread_flag = 1;
-    exec_wrapper("/jailbreak/bin/id", 0, 0, 0, 0, 0, tfp0);
     
     
+    sleep(3);
+    exec_wrapper("/jailbreak/bin/ws", kb, 0, 0, 0, 0, tfp0);
+    exec_wrapper("/jailbreak/usr/local/bin/dropbear", "-R", "--shell", "/jailbreak/bin/bash", 0, 0, tfp0);
+    exec_wrapper("/jailbreak/bin/nerfbat", "die", 0, 0, 0, 0, tfp0);
+    
+    free(kb);
+    sleep(3);
+
     // unpatching AMFID
     unpatch_amfid(amfid_port, old_amfid_MISVSACI);
+    exec_wrapper("/jailbreak/bin/nerfbat", 0, 0, 0, 0, 0, tfp0);
+    sleep(1);
+    kill_thread_flag = 1;
+    exec_wrapper("/jailbreak/bin/id", 0, 0, 0, 0, 0, tfp0);
     
     //printf("[+]\tReverting privs to avoid a crash...");
     //set_my_pid(old_creds);

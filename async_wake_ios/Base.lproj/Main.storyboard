@@ -56,7 +56,7 @@
                                 <rect key="frame" x="47" y="446" width="274" height="112"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <string key="text">Thanks to wait_what and mxms for support.  Inspired by Jonathan Levin and the QiLin Toolkit http://newosxbook.com/QiLin/  If you close this app, the webserver &amp; ssh will run in the background!</string>
+                                <string key="text">Thanks to wait_what and mxms for support.  Inspired by Jonathan Levin and the QiLin Toolkit http://newosxbook.com/QiLin/  Don't close this app! (Navigating away is fine)</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
