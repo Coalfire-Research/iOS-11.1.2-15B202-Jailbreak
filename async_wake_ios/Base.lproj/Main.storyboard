@@ -25,7 +25,7 @@
                                     <action selector="hide:" destination="BYZ-38-t0r" eventType="touchUpInside" id="o6H-nb-ffJ"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" text="iOS 11.1.2 Jailbreak (v 0.3b) for Kernel 15B202  Kernel exploit provided by Ian Beer Jailbreak by Bryce Bearchell" textAlignment="center" id="lr8-hx-Yqg" userLabel="header">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" text="iOS 11.1.2 Jailbreak (v 0.3c) for Kernel 15B202  Kernel exploit provided by Ian Beer Jailbreak by Bryce Bearchell" textAlignment="center" id="lr8-hx-Yqg" userLabel="header">
                                 <rect key="frame" x="66" y="20" width="238" height="92"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
