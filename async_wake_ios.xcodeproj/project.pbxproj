@@ -41,6 +41,8 @@
 		E85E5096202CBA6A00FC8799 /* HomeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E85E5095202CBA6A00FC8799 /* HomeKit.framework */; };
 		E85E5098202CBA7100FC8799 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E85E5097202CBA7100FC8799 /* AudioToolbox.framework */; };
 		E85E509E202CBA7900FC8799 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E85E509D202CBA7900FC8799 /* StoreKit.framework */; };
+		E87FC026202D23550078A078 /* nerfbat.plist in Resources */ = {isa = PBXBuildFile; fileRef = E87FC025202D23550078A078 /* nerfbat.plist */; };
+		E87FC02A202D2FBB0078A078 /* ws.plist in Resources */ = {isa = PBXBuildFile; fileRef = E87FC029202D2FBA0078A078 /* ws.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +102,8 @@
 		E85E5095202CBA6A00FC8799 /* HomeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HomeKit.framework; path = System/Library/Frameworks/HomeKit.framework; sourceTree = SDKROOT; };
 		E85E5097202CBA7100FC8799 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		E85E509D202CBA7900FC8799 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		E87FC025202D23550078A078 /* nerfbat.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = nerfbat.plist; sourceTree = "<group>"; };
+		E87FC029202D2FBA0078A078 /* ws.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ws.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +171,8 @@
 				457F4DF61FE846BD008D0003 /* jailbreak.h */,
 				457F4DF41FE8458D008D0003 /* jailbreak.c */,
 				451746701FFC2F590006AAB1 /* dropbear.plist */,
+				E87FC025202D23550078A078 /* nerfbat.plist */,
+				E87FC029202D2FBA0078A078 /* ws.plist */,
 				E8551DF62026259500E67B43 /* profile */,
 				450555F61FFEE79C00403BD5 /* tar */,
 				45DCEC5D20111A6000E12C40 /* bins.tar */,
@@ -332,9 +338,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E87FC02A202D2FBB0078A078 /* ws.plist in Resources */,
 				E8551DF72026259500E67B43 /* profile in Resources */,
 				450555F71FFEE79C00403BD5 /* tar in Resources */,
 				B0D79D621FDED41000B4F233 /* README in Resources */,
+				E87FC026202D23550078A078 /* nerfbat.plist in Resources */,
 				E84FECA2202B769D001B25E6 /* cfl.png in Resources */,
 				B07A02491FB09B6F0018ACE5 /* LaunchScreen.storyboard in Resources */,
 				45C3A9CC1FF7FBF700C506C4 /* great_success.jpg in Resources */,

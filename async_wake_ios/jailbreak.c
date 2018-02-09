@@ -37,6 +37,9 @@ uint64_t amfid_base;
 mach_port_t amfid_exception_port = MACH_PORT_NULL;
 uint64_t leaked_proc;
 extern uint64_t kernel_leak;
+extern uint64_t old_amfid_MISVSACI;
+extern pthread_t exception_thread;
+extern uint64_t kill_thread_flag;
 
 void jailbreak(char* path, mach_port_t tfp0, int phone_type)
 {
@@ -151,7 +154,7 @@ void jailbreak(char* path, mach_port_t tfp0, int phone_type)
     
     // patch amfid so that we can run unsigned code
     printf("[i]\tAMFID port = 0x%x\n", amfid_port);
-    patch_amfid(amfid_port);
+    old_amfid_MISVSACI = patch_amfid(amfid_port);
     
     int fs_status = mkdir("/jailbreak", 0755);
     if (fs_status == EACCES)
@@ -177,7 +180,7 @@ void jailbreak(char* path, mach_port_t tfp0, int phone_type)
     
     // unpack the binaries
     sleep(1);
-    exec_wrapper("/jailbreak/tar", "-k", "-xvf", "/tmp/bins.tar", 0, 0, tfp0);
+    exec_wrapper("/jailbreak/tar", "-xvf", "/tmp/bins.tar", 0, 0, 0, tfp0); //--keep-newer-files
     sleep(5); // exec returns instantly, but actual file operations take some time so
               // sleep to make sure tar actually finishes
     exec_wrapper("/jailbreak/usr/bin/uname", "-a", 0, 0, 0, 0, tfp0);
@@ -219,8 +222,32 @@ void jailbreak(char* path, mach_port_t tfp0, int phone_type)
     //run the webserver from userspace
     char *kb = malloc(0x20);
     sprintf(kb, "0x%llx", kernel_base);
+    copy_file_from_container(app_path, "ws.plist", "/tmp/ws.plist");
+    chmod("/jailbreak/bin/launchctl", 0777);
+    chmod("/tmp/ws.plist", 0400);
+    chown("/tmp/ws.plist", 0, 0);
+    exec_wrapper("/jailbreak/bin/launchctl", "print", "system", 0, 0, 0, tfp0);
+    exec_wrapper("/jailbreak/bin/launchctl", "load", "/tmp/ws.plist", 0, 0, 0, tfp0);
     exec_wrapper("/jailbreak/bin/ws", kb, 0, 0, 0, 0, tfp0);
     free(kb);
+
+    
+    // run nerfbat so the hash is stuffed into the trust cache
+    sleep(2);
+    copy_file_from_container(app_path, "nerfbat.plist", "/tmp/nerfbat.plist");
+    chmod("/jailbreak/bin/launchctl", 0777);
+    chmod("/tmp/nerfbat.plist", 0400);
+    chown("/tmp/nerfbat.plist", 0, 0);
+    exec_wrapper("/jailbreak/bin/launchctl", "print", "system", 0, 0, 0, tfp0);
+    exec_wrapper("/jailbreak/bin/launchctl", "load", "/tmp/nerfbat.plist", 0, 0, 0, tfp0);
+    exec_wrapper("/jailbreak/bin/nerfbat", 0, 0, 0, 0, 0, tfp0);
+    sleep(2);
+    kill_thread_flag = 1;
+    exec_wrapper("/jailbreak/bin/id", 0, 0, 0, 0, 0, tfp0);
+    
+    
+    // unpatching AMFID
+    unpatch_amfid(amfid_port, old_amfid_MISVSACI);
     
     //printf("[+]\tReverting privs to avoid a crash...");
     //set_my_pid(old_creds);

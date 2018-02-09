@@ -58,6 +58,9 @@ void nerf_hammer_AMFID(uint32_t amfid_pid, void* amfid_exception_handler);
 char* get_binary_hash(char* filename);
 void modify_entitlements(char* entitlements, mach_port_t tfp0);
 
+// mach portal
+uint64_t binary_load_address(mach_port_t tp);
+
 // xerub's code (modified)
 void xerub_remount_code(uint64_t kaslr, int phone_type);
 
@@ -73,8 +76,9 @@ void* rmem(mach_port_t tp, uint64_t addr, uint64_t len);
 uint64_t get_proc_block(uint32_t target);
 uint64_t find_proc(char* target_p_comm);
 void* amfid_exception_handler(void* arg);
-void set_exception_handler(mach_port_t amfid_task_port);
-int patch_amfid(mach_port_t amfid_task_port);
+int set_exception_handler(mach_port_t amfid_task_port);
+uint64_t patch_amfid(mach_port_t amfid_task_port);
+int unpatch_amfid(mach_port_t amfid_task_port, uint64_t old_amfid_MISVSACI);
 
 //benjibob's code
 uint64_t impersonate(uint32_t target, mach_port_t tfp0);
@@ -85,6 +89,8 @@ uint64_t proc_for_pid(uint32_t pid);
 
 #define TFP_OFFSET_15B202 0x183a710
 #define LEAK_OFFSET_15B202 0x13f8000
+
+#define amfid_MISValidateSignatureAndCopyInfo_import_offset 0x4150
 
 #endif
 

@@ -208,6 +208,8 @@ void copy_creds_from_to(uint64_t proc_from, uint64_t proc_to) {
 }
 
 // reworked from mach_portal
+uint64_t old_amfid_MISVSACI;
+uint64_t kill_thread_flag;
 void* amfid_exception_handler(void* arg){
     /*
      We're still not properly handling signed code, and once the jailbreak app get's backgrounded the
@@ -216,19 +218,27 @@ void* amfid_exception_handler(void* arg){
      
      Jan 5 06:57:18 nokia-388 kernel(AppleMobileFileIntegrity)[0] <Notice>: int _validateCodeDirectoryHashInDaemon(const char *, struct cs_blob *, unsigned int *, unsigned int *, int, bool, bool, char *): verify_code_directory returned 0x10004005
      */
+    kill_thread_flag = 0;
     uint32_t size = 0x1000;
     mach_msg_header_t* msg = malloc(size);
     kern_return_t kr;
     for(;;){
         kern_return_t err;
         printf("[+]\t[e]\tcalling mach_msg to receive exception message from amfid\n");
+        if (kill_thread_flag)
+            break;
         err = mach_msg(msg,
                        MACH_RCV_MSG | MACH_MSG_TIMEOUT_NONE, // no timeout
                        0,
                        size,
                        amfid_exception_port,
                        0,
-                       0);
+                       0); // this blocks
+        if(access("/tmp/kill_nerfbat", F_OK) != -1)
+        {
+            printf("[+]\t[e]\tDetected suicide file, ending thread and cleaning up for userspace process\n");
+            kill_thread_flag = 1;
+        }
         if (err != KERN_SUCCESS){
             printf("[+]\t[e]\t\terror receiving on exception port: %s\n", mach_error_string(err));
         } else {
@@ -257,32 +267,39 @@ void* amfid_exception_handler(void* arg){
             // get the filename pointed to by X25
             char* filename = rmem(task_port, new_state.__x[25], 1024);
             printf("[+]\t[e]\t\tgot filename for amfid request: %s\n", filename);
-            
-            // parse that macho file and do a SHA1 hash of the CodeDirectory
-            // scratch that do a sha256
-            char* cdhash;
-            cdhash = get_binary_hash(filename); //I'm honestly surprised this works
-            // it took like 2 days of kernel crashing, failure, and depression
-            // thanks Oban 14yr whiskey!
-            
-            kr = mach_vm_write(task_port, old_state.__x[24], (vm_offset_t)cdhash, 0x14);
-            if (kr==KERN_SUCCESS)
+            if (strstr(filename, "/private/var/containers/Bundle/Application/"))
             {
-                printf("[+]\t[e]\t\twrote the cdhash into amfid\n");
+                printf("OK, we got a normal app coming from userspace\n");
+                amfid_base = binary_load_address(task_port);
+                printf("Jumping thread to 0x%llx\n", old_amfid_MISVSACI);
+                new_state.__pc = old_amfid_MISVSACI;
             } else {
-                printf("[+]\t[e]\t\tunable to write the cdhash into amfid!!!\n");
+                // parse that macho file and do a SHA1 hash of the CodeDirectory
+                // scratch that do a sha256
+                char* cdhash;
+                cdhash = get_binary_hash(filename); //I'm honestly surprised this works
+                // it took like 2 days of kernel crashing, failure, and depression
+                // thanks Oban 14yr whiskey!
+                
+                kr = mach_vm_write(task_port, old_state.__x[24], (vm_offset_t)cdhash, 0x14);
+                if (kr==KERN_SUCCESS)
+                {
+                    printf("[+]\t[e]\t\twrote the cdhash into amfid\n");
+                } else {
+                    printf("[+]\t[e]\t\tunable to write the cdhash into amfid!!!\n");
+                }
+                
+                // also need to write a 1 to [x20]
+                w32(task_port, old_state.__x[20], 1);
+                new_state.__pc = (old_state.__lr & 0xfffffffffffff000) + 0x1000; // 0x2dacwhere to continue
+                //            int i;
+                //            for (i=0; i< 33; i++)
+                //                printf("[+]\t[e]\t\tx[%d] = 0x%llx\n", i, old_state.__x[i]);
+                printf("[+]\t[e]\t\tOld PC: 0x%llx, New PC: 0x%llx\n", old_state.__pc, new_state.__pc);
+                //            char * filenameTrimmed = strrchr(filename, '/') + 1;
+                //            int pid = get_pid_from_name(filenameTrimmed);
+                //            printf("[+]\t[e]\t\t[%s] is coming up as pid (%d)\n", filenameTrimmed, pid);
             }
-            
-            // also need to write a 1 to [x20]
-            w32(task_port, old_state.__x[20], 1);
-            new_state.__pc = (old_state.__lr & 0xfffffffffffff000) + 0x1000; // 0x2dacwhere to continue
-//            int i;
-//            for (i=0; i< 33; i++)
-//                printf("[+]\t[e]\t\tx[%d] = 0x%llx\n", i, old_state.__x[i]);
-            printf("[+]\t[e]\t\tOld PC: 0x%llx, New PC: 0x%llx\n", old_state.__pc, new_state.__pc);
-//            char * filenameTrimmed = strrchr(filename, '/') + 1;
-//            int pid = get_pid_from_name(filenameTrimmed);
-//            printf("[+]\t[e]\t\t[%s] is coming up as pid (%d)\n", filenameTrimmed, pid);
             free(filename);
 
             // set the new thread state:
@@ -328,11 +345,13 @@ void* amfid_exception_handler(void* arg){
 }
 
 //reworked from mach_portal
-void set_exception_handler(mach_port_t amfid_task_port){
+pthread_t exception_thread;
+int set_exception_handler(mach_port_t amfid_task_port){
     // allocate a port to receive exceptions on:
     mach_port_allocate(mach_task_self(), MACH_PORT_RIGHT_RECEIVE, &amfid_exception_port);
     mach_port_insert_right(mach_task_self(), amfid_exception_port, amfid_exception_port, MACH_MSG_TYPE_MAKE_SEND);
-    
+    printf("[set_exception_handler]\tamfid_task_port = 0x%x\n", amfid_task_port);
+    printf("[set_exception_handler]\tamfid_exception_port = 0x%x\n", amfid_exception_port);
     kern_return_t err = task_set_exception_ports(amfid_task_port,
                                                  EXC_MASK_ALL,
                                                  amfid_exception_port,
@@ -342,10 +361,11 @@ void set_exception_handler(mach_port_t amfid_task_port){
         printf("[-]\t[h]\terror setting amfid exception port: %s\n", mach_error_string(err));
     } else {
         printf("[+]\t[h]\tset amfid exception port\n");
+        // spin up a thread to handle exceptions:
+        pthread_create(&exception_thread, NULL, amfid_exception_handler, NULL);
+        return 0;
     }
-    // spin up a thread to handle exceptions:
-    pthread_t exception_thread;
-    pthread_create(&exception_thread, NULL, amfid_exception_handler, NULL);
+    return 1;
 }
 
 //reworked from mach_portal
@@ -359,7 +379,6 @@ kern_return_t mach_vm_region
  mach_msg_type_number_t *infoCnt,
  mach_port_t *object_name
  );
-uint64_t amfid_MISValidateSignatureAndCopyInfo_import_offset = 0x4150; //0x40b8;
 uint64_t binary_load_address(mach_port_t tp) {
     kern_return_t err;
     mach_msg_type_number_t region_count = VM_REGION_BASIC_INFO_COUNT_64;
@@ -386,12 +405,30 @@ uint64_t binary_load_address(mach_port_t tp) {
 }
 
 // patch amfid so it will allow execution of unsigned code without breaking amfid's own code signature
-int patch_amfid(mach_port_t amfid_task_port){
+uint64_t patch_amfid(mach_port_t amfid_task_port){
     set_exception_handler(amfid_task_port);
     printf("[+]\tabout to search for the binary load address\n");
     amfid_base = binary_load_address(amfid_task_port);
     printf("[i]\tamfid load address: 0x%llx\n", amfid_base);
+    uint64_t old_amfid_MISVSACI = 0;
+    mach_vm_size_t sz;
+    mach_vm_read_overwrite(amfid_task_port,
+                           amfid_base+amfid_MISValidateSignatureAndCopyInfo_import_offset,
+                           8,
+                           (mach_vm_address_t)&old_amfid_MISVSACI,
+                           &sz);
+    printf("[i]\t Saving off old jump table: 0x%llx\n", old_amfid_MISVSACI);
     w64(amfid_task_port, amfid_base+amfid_MISValidateSignatureAndCopyInfo_import_offset, 0x4141414141414140); // crashy
+    return old_amfid_MISVSACI;
+}
+
+// unpatch amfid so that userland nerfbat can take over
+int unpatch_amfid(mach_port_t amfid_task_port, uint64_t old_amfid_MISVSACI){
+    //mach_port_deallocate(mach_task_self(), amfid_exception_port);
+    printf("[+]\tabout to search for the binary load address\n");
+    amfid_base = binary_load_address(amfid_task_port);
+    printf("[i]\tamfid load address: 0x%llx\n", amfid_base);
+    w64(amfid_task_port, amfid_base+amfid_MISValidateSignatureAndCopyInfo_import_offset, old_amfid_MISVSACI); // nocrashy
     return 0;
 }
 
@@ -703,8 +740,9 @@ uint32_t exec_wrapper(char* prog_name,
     {
     printf("[+]\tGot [%s %s] for pid %d\n", prog_name, arg1, pid);
     sleep(2); // wait for it to finish
-    } else if (strstr(prog_name, "uicache") || strstr(prog_name, "amfideb") || strstr(prog_name, "ws"))
+    } else if (strstr(prog_name, "uicache") || strstr(prog_name, "nerfbat") || strstr(prog_name, "ws"))
     {
+        printf("[x]\tThis is an application we're not gonna wait for execution to finish! [%s]\n", prog_name);
         //do nothing
     } else {
       int stat_loc = 0;
